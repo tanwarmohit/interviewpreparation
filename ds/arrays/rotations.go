@@ -32,3 +32,68 @@ func juggling(a []int, d int) []int {
 	}
 	return a
 }
+
+func reverse(a []int) {
+	n := len(a)
+	for i := 0; i < n/2; i++ {
+		a[i], a[n-i-1] = a[n-i-1], a[i]
+	}
+}
+
+func reverseRotate(a []int, d int) []int {
+	n := len(a)
+	d = d % n
+	reverse(a[:d])
+	reverse(a[d:])
+	reverse(a)
+	return a
+}
+
+func findPivot(a []int) int {
+	low := 0
+	high := len(a) - 1
+	mid := 0
+
+	for high > low {
+		mid = low + (high-low)/2
+		if low < mid && a[mid-1] > a[mid] {
+			return mid - 1
+		} else if mid < high && a[mid] > a[mid+1] {
+			return mid
+		} else if a[low] > a[mid] {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+
+	return -1
+}
+
+func binarySearch(a []int, low, high, key int) int {
+	mid := 0
+	for high >= low {
+		mid = low + (high-low)/2
+		if key == a[mid] {
+			return mid
+		} else if key > a[mid] {
+			low = mid + 1
+		} else {
+			high = mid - 1
+		}
+	}
+	return -1
+}
+
+func findInRotatedSortedPivot(a []int, key int) int {
+	n := len(a)
+	if pivot := findPivot(a); pivot == -1 {
+		return binarySearch(a, 0, n-1, key)
+	} else if key == a[pivot] {
+		return pivot
+	} else if key >= a[0] {
+		return binarySearch(a, 0, pivot-1, key)
+	} else {
+		return binarySearch(a, pivot+1, n-1, key)
+	}
+}
