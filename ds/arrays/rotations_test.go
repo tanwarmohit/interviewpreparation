@@ -1,6 +1,7 @@
 package rotations
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -163,6 +164,31 @@ func TestFindInRotatedSortedPivot(t *testing.T) {
 
 	for _, data := range inputs {
 		if actual := findInRotatedSortedPivot(data.data, data.key); actual != data.expected {
+			t.Fail()
+		}
+	}
+}
+
+func TestFindInRotatedSorted(t *testing.T) {
+	type input struct {
+		data          []int
+		key, expected int
+	}
+	inputData := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	inputs := []input{
+		{juggling(arrayCopy(inputData), 3), 1, 6},
+		{juggling(arrayCopy(inputData), 0), 1, 0},
+		{juggling(arrayCopy(inputData), 7), 2, 3},
+		{juggling(arrayCopy(inputData[:3]), 1), 3, 1},
+		{juggling(arrayCopy(inputData), 5), 6, 0},
+		{juggling(arrayCopy(inputData), 7), 4, 5},
+		{juggling(arrayCopy(inputData[:1]), 7), 1, 0},
+		{juggling(arrayCopy(inputData[:1]), 7), 11, -1},
+	}
+
+	for _, data := range inputs {
+		if actual := findInRotatedSorted(data.data, data.key); actual != data.expected {
+			fmt.Println(actual, data.expected)
 			t.Fail()
 		}
 	}

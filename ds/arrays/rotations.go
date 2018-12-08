@@ -97,3 +97,29 @@ func findInRotatedSortedPivot(a []int, key int) int {
 		return binarySearch(a, pivot+1, n-1, key)
 	}
 }
+
+func findInRotatedSorted(a []int, key int) int {
+	low, high, mid := 0, len(a)-1, 0
+	for high > low {
+		mid = low + (high-low)/2
+		if key == a[mid] {
+			return mid
+		} else if a[low] <= a[mid] {
+			if key >= a[low] && key <= a[mid] {
+				high = mid - 1
+			} else {
+				low = mid + 1
+			}
+		} else {
+			if key >= a[mid] && key <= a[high] {
+				low = mid + 1
+			} else {
+				high = mid - 1
+			}
+		}
+	}
+	if high == low && key == a[low] {
+		return high
+	}
+	return -1
+}
