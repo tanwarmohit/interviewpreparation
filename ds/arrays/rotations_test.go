@@ -271,3 +271,25 @@ func TestMaxSumRotation(t *testing.T) {
 		}
 	}
 }
+
+func TestFindMinimumInRotatedSorted(t *testing.T) {
+	input := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
+	type testSuiteSimple struct {
+		rotate, expected int
+	}
+
+	testSuites := []testSuiteSimple{
+		{2, 1},
+		{5, 1},
+		{0, 1},
+		{9, 1},
+		{11, 1},
+	}
+
+	for _, data := range testSuites {
+		if actual := findMinimumInRotatedSorted(juggling(arrayCopy(input), data.rotate)); actual != data.expected {
+			t.Logf("expected: %d, acual: %d\n", data.expected, actual)
+			t.Fail()
+		}
+	}
+}

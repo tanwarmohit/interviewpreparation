@@ -207,3 +207,21 @@ func maxSumRotation(a []int) int {
 	}
 	return maxSum
 }
+
+func findMinimumInRotatedSorted(a []int) int {
+	low, high, mid := 0, len(a)-1, 0
+
+	for high > low {
+		mid = low + (high-low)/2
+		if low < mid && a[mid-1] > a[mid] {
+			return a[mid]
+		} else if high > mid && a[mid] > a[mid+1] {
+			return a[mid+1]
+		} else if a[high] > a[mid] {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+	return a[low]
+}
