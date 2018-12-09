@@ -123,3 +123,52 @@ func findInRotatedSorted(a []int, key int) int {
 	}
 	return -1
 }
+
+func findPairSumInSortedArray(a []int, sum int) (int, int) {
+	low, high := 0, len(a)-1
+	currSum := 0
+	for high > low {
+		currSum = a[low] + a[high]
+		if currSum == sum {
+			return a[low], a[high]
+		} else if currSum > sum {
+			high--
+		} else {
+			low++
+		}
+	}
+
+	return -1, -1
+}
+
+func findPairSumInSortedRotatedArray(a []int, sum int) (int, int) {
+	low, high := 0, 0
+	if pivot := findPivot(a); pivot == -1 {
+		low, high = 0, len(a)-1
+	} else {
+		low, high = pivot+1, pivot
+	}
+	n := len(a)
+	currSum := 0
+	for ((n - (low - high)) % n) != 0 {
+		currSum = a[low] + a[high]
+		if currSum == sum {
+			return a[low], a[high]
+		} else if currSum > sum {
+			high = (n + (high - 1)) % n
+		} else {
+			low = (n + (low + 1)) % n
+		}
+	}
+
+	return -1, -1
+}
+
+func insertionSort(a []int) {
+	n := len(a)
+	for i := 0; i < n-1; i++ {
+		for j := i + 1; j > 0 && a[j] < a[j-1]; j-- {
+			a[j], a[j-1] = a[j-1], a[j]
+		}
+	}
+}

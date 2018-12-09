@@ -1,7 +1,6 @@
 package rotations
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -188,7 +187,73 @@ func TestFindInRotatedSorted(t *testing.T) {
 
 	for _, data := range inputs {
 		if actual := findInRotatedSorted(data.data, data.key); actual != data.expected {
-			fmt.Println(actual, data.expected)
+			t.Log(actual, data.expected)
+			t.Fail()
+		}
+	}
+}
+
+func TestInsertionSort(t *testing.T) {
+
+	type sortInput struct {
+		input  []int
+		output []int
+	}
+
+	inputs := []sortInput{
+		{[]int{3, 2, 1}, []int{1, 2, 3}},
+		{[]int{1, 2}, []int{1, 2}},
+		{[]int{4, 2, 5, 8, 98, 45, 12}, []int{2, 4, 5, 8, 12, 45, 98}},
+	}
+
+	for _, data := range inputs {
+		if insertionSort(data.input); !deepIntArrayEquals(data.input, data.output) {
+			t.Fail()
+		}
+	}
+
+}
+func TestFindPairSumInSortedArray(t *testing.T) {
+	type pairSumInput struct {
+		input                         []int
+		sum                           int
+		expectedFirst, expectedSecond int
+	}
+
+	pairSumInputs := []pairSumInput{
+		{[]int{2, 5, 4, 12, 1, 14}, 16, 2, 14},
+		{[]int{2, 5, 4, 12, 1, 14}, 9, 4, 5},
+		{[]int{2, 5, 4, 12, 1, 14}, 29, -1, -1},
+	}
+
+	for _, input := range pairSumInputs {
+		insertionSort(input.input)
+		if actualFirst, actualSecond := findPairSumInSortedArray(input.input, input.sum); actualFirst != input.expectedFirst || actualSecond != input.expectedSecond {
+			t.Logf("af: %d, as: %d\n", actualFirst, actualSecond)
+			t.Fail()
+		}
+	}
+}
+
+func TestFindPairSumInSortedRotatedArray(t *testing.T) {
+	type pairSumInput struct {
+		input                         []int
+		rotationCount                 int
+		sum                           int
+		expectedFirst, expectedSecond int
+	}
+
+	pairSumInputs := []pairSumInput{
+		{[]int{2, 5, 4, 12, 1, 14}, 2, 16, 2, 14},
+		{[]int{2, 5, 4, 12, 1, 14}, 2, 9, 4, 5},
+		{[]int{2, 5, 4, 12, 1, 14}, 0, 29, -1, -1},
+	}
+
+	for _, input := range pairSumInputs {
+		insertionSort(input.input)
+		input.input = juggling(input.input, input.rotationCount)
+		if actualFirst, actualSecond := findPairSumInSortedRotatedArray(input.input, input.sum); actualFirst != input.expectedFirst || actualSecond != input.expectedSecond {
+			t.Logf("af: %d, as: %d, ef: %d, es: %d\n", actualFirst, actualSecond, input.expectedFirst, input.expectedSecond)
 			t.Fail()
 		}
 	}
