@@ -258,3 +258,16 @@ func TestFindPairSumInSortedRotatedArray(t *testing.T) {
 		}
 	}
 }
+
+func TestMaxSumRotation(t *testing.T) {
+	inputs := [][]int{
+		{2, 5, 6, 3, 5, 12, 78},
+		{5, 4, 3, 2, 1},
+	}
+
+	for _, input := range inputs {
+		if maxSumRotation(input) != maxSumRotationBrute(input) {
+			t.Fail()
+		}
+	}
+}

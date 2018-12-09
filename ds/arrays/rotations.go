@@ -172,3 +172,38 @@ func insertionSort(a []int) {
 		}
 	}
 }
+
+func maxSumRotationBrute(a []int) int {
+	n := len(a)
+	sum, maxSum := 0, 0
+	for i := 0; i < n; i++ {
+		a = juggling(a, i)
+		sum = 0
+		for j, v := range a {
+			sum += j * v
+		}
+		if maxSum < sum {
+			maxSum = sum
+		}
+	}
+	return maxSum
+}
+
+func maxSumRotation(a []int) int {
+	var sum, maxSum, arrSum int
+
+	for i, v := range a {
+		arrSum += v
+		sum += i * v
+	}
+
+	maxSum = sum
+	n := len(a)
+	for i := 1; i < n; i++ {
+		sum += n*a[i-1] - arrSum
+		if maxSum < sum {
+			maxSum = sum
+		}
+	}
+	return maxSum
+}
